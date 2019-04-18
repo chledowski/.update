@@ -1,0 +1,353 @@
+
+" Autoinstall Plug if it does not present
+if empty(glob('~/.vim/autoload/plug.vim'))
+	  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+	      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    endif
+
+set nocompatible
+filetype off
+set re=1
+
+
+call plug#begin('~/.vim/plugged')
+
+" general
+Plug 'chriskempson/base16-vim'
+Plug 'vim-scripts/a.vim'
+Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'benjifisher/matchit.zip'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-speeddating'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'scrooloose/nerdcommenter'
+Plug 'Shougo/vimproc'
+Plug 'majutsushi/tagbar'
+Plug 'jpalardy/vim-slime'
+Plug 'milkypostman/vim-togglelist'
+Plug 'Valloric/YouCompleteMe'
+Plug 'Raimondi/delimitMate'
+Plug 'fholgado/minibufexpl.vim'
+Plug 'Chiel92/vim-autoformat'
+Plug 'jceb/vim-orgmode'
+Plug 'mattn/calendar-vim'
+Plug 'vim-scripts/utl.vim'
+Plug 'ralesi/office.vim'
+
+Plug 'pbrisbin/html-template-syntax'
+
+Plug 'kien/ctrlp.vim'
+Plug 'sgur/ctrlp-extensions.vim'
+
+Plug 'tpope/vim-fugitive'
+Plug 'gregsexton/gitv'
+
+" snipmate
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+
+" latex and text editing
+Plug 'LaTeX-Box-Team/LaTeX-Box'
+
+" YAML
+Plug 'avakhov/vim-yaml'
+
+" C/C++
+Plug 'brookhong/cscope.vim'
+Plug 'w0rp/ale'
+
+" Python
+Plug 'vim-python/python-syntax'
+Plug 'ryanoasis/vim-devicons'
+
+
+call plug#end()
+
+set encoding=utf8
+autocmd FileType nerdtree setlocal nolist 
+
+
+" filetypes
+filetype plugin on
+filetype indent on
+set nu
+
+" Set leader
+let maplocalleader = "\\"
+let mapleader = ','
+
+" no bells
+set noeb vb t_vb=
+au GUIEnter * set vb t_vb=
+
+" basic mappings
+nnoremap ; :
+
+map Y y$
+
+" conceal level
+" set conceallevel=2
+
+" folding
+" set foldlevelstart=99
+
+" latex
+let g:tex_flavor='latex'
+let g:tex_conceal = 'admg'
+
+augroup latex
+                au!
+                " au BufWritePost *.tex Latexmk
+
+                au BufRead,BufNewFile *.tex map <silent> <Leader>ls :silent !okular --unique "<C-R>=LatexBox_GetOutputFile()<CR>"\#src:<C-R>=line('.')<CR>%:p<CR>
+                au BufRead,BufNewFile *.tex nmap <buffer> <F5> <Plug>LatexChangeEnv
+                au BufRead,BufNewFile *.tex vmap <buffer> <F7> <Plug>LatexWrapSelection
+                au BufRead,BufNewFile *.tex vmap <buffer> <S-F7> <Plug>LatexEnvWrapSelection
+                au BufRead,BufNewFile *.tex map <buffer> <Leader>lc :w !detex \| wc -w<CR>
+
+                au BufRead,BufNewFile *.tex set tabstop=2
+                au BufRead,BufNewFile *.tex set shiftwidth=2
+                au BufRead,BufNewFile *.tex set expandtab
+                au BufRead,BufNewFile *.tex set iskeyword+=:
+                " au BufRead,BufNewFile *.tex set textwidth=89
+                "autocmd FileType tex let b:AutoClosePairs = AutoClose#DefaultPairsModified("| $", "")
+augroup end
+
+" no ~ files
+set nobackup
+
+" hidden buffers
+set hidden
+
+" scroll
+nnoremap <C-Down> <C-e>
+nnoremap <C-Up> <C-y>
+
+" buffer shuffling
+nnoremap <C-Left> :bp<CR>
+nnoremap <C-Right> :bn<CR>
+
+" tab navigation
+cabbrev td tabclose
+
+" visual navigation
+noremap j gj
+noremap k gk
+noremap gj j
+noremap gk k
+noremap <Down> gj
+noremap <Up> gk
+
+" window navigation
+noremap <C-h>  <C-w>h
+noremap <C-j>  <C-w>j
+noremap <C-k>  <C-w>k
+noremap <C-l>  <C-w>l
+
+" visual line ends
+noremap $ g$
+noremap g$ $
+noremap <End> g$
+
+" autochdir
+" set autochdir
+
+" modeline
+set modeline
+set modelines=5
+
+" history
+set history=1000
+
+" git mappings
+map <Leader>gc :Gstatus<CR>
+map <Leader>gs :Gsplit 
+map <Leader>gb :Gblame<CR>
+map <Leader>gd :Gdiff 
+map <Leader>gt :Git tag 
+map <Leader>gf :Gitv!<CR>
+map <Leader>gv :Gitv<CR>
+
+" highlight search
+set hlsearch
+set incsearch
+map <Leader>/ :noh<CR>
+
+" ignorecase if lowercase
+set ignorecase
+set smartcase
+
+" show vim commands
+set showcmd
+
+" Better visual indents
+vnoremap < <gv
+vnoremap > >gv
+
+" Highlight trailing spaces and erase them while saving
+autocmd ColorScheme * highlight extraWhitespace ctermbg=red guibg=red
+au InsertLeave * match ExtraWhitespace /\s\+$/
+
+" underscore keyword for code completion
+set iskeyword+=_
+
+" edits
+map <Leader>ev :e $MYVIMRC<CR>
+map <Leader>es :e ~/.vim/snippets/%:e.snippets<CR>
+map <Leader>et :e ~/todo/todo.org<CR>
+
+" other mappings
+map <F1> <Esc>:w<CR>
+
+" minibufexplorer
+let g:miniBufExplorerAutoStart = 0
+map <F1> :MBEToggle<CR>
+nnoremap <C-Left> :MBEbb<CR>
+nnoremap <C-Right> :MBEbf<CR>
+
+" solarized
+syntax enable
+let base16colorspace=256
+set background=dark
+colorscheme base16-default-dark
+let python_highlight_all=1
+syntax on
+
+" NERDTree
+map <F2> :NERDTreeToggle<CR>
+
+" NERDCommenter
+let NERDSpaceDelims=1
+
+nmap <Leader>c :call NERDComment(0, 'invert')<CR>
+vmap <Leader>c :call NERDComment(1, 'invert')<CR>
+
+" status line
+set laststatus=2
+set showtabline=2
+
+" cursor line
+set cursorline
+
+" ctrlp
+let g:ctrlp_map='<Leader>p'
+let g:ctrlp_cmd = 'CtrlPLastMode'
+"let g:ctrlp_extensions = ['yankring']
+
+" powerline
+let g:lightline = {
+      \ 'colorscheme': 'solarized',
+      \ }
+
+" yankring
+nnoremap <silent> <F3> :YRShow<CR>
+let g:yankring_history_dir= '~/tmp'
+
+" tagbar
+map <F4> :TagbarToggle<CR>
+
+let g:tagbar_autofocus = 1
+let g:tagbar_autoclose = 1
+
+let g:tagbar_type_tex = {
+    \ 'ctagstype' : 'latex',
+    \ 'kinds'     : [
+        \ 's:sections',
+        \ 'g:graphics:0:0',
+        \ 'l:labels',
+        \ 'r:refs:1:0',
+        \ 'p:pagerefs:1:0'
+    \ ],
+    \ 'sort'    : 0
+\ }
+
+set guifont=Inconsolata\ Nerd\ Font\ Complete\ Mono\ 10
+" wheel scrolling - http://vim.wikia.com/wiki/VimTip760
+nnoremap <C-ScrollWheelUp> :silent! let &guifont = substitute(
+    \ &guifont,
+    \ '\d\+',
+    \ '\=eval(submatch(0)+1)',
+    \ '')<CR><CR>
+nnoremap <C-ScrollWheelDown> :silent! let &guifont = substitute(
+    \ &guifont,
+    \ '\d\+',
+    \ '\=eval(submatch(0)-1)',
+    \ '')<CR><CR>
+
+" YouCompleteMe
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_autoclose_preview_window_after_insertion = 1
+au BufWritePost *.c,*.cpp,*.h YcmForceCompileAndDiagnostics
+let g:UltiSnipsExpandTrigger = "<c-space>"
+" let g:ycm_filetype_blacklist = {'python' : 1}
+" let g:ycm_filetype_specific_completion_to_disable = {'python' : 1}
+
+let g:UltiSnipsExpandTrigger="<c-j>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+let g:UltiSnipsListSnippets = '<c-b>'
+let g:snips_author = 'Tomasz Dwojak'
+let g:snips_email = 't.dwojak@amu.edu.pl'
+let g:snips_github = 'github.com/tomekd'
+
+" vim-slime
+let g:slime_target = "tmux"
+let g:slime_paste_file = "$HOME/tmp/.slime_paste"
+let g:slime_no_mappings = 1
+xmap <Leader>s <Plug>SlimeRegionSend
+nmap <Leader>s <Plug>SlimeParagraphSend
+nmap <Leader>l <Plug>SlimeLineSend
+
+" ack
+map <Leader>a :Ack 
+
+"
+" language-specific settings
+"
+
+" python settings
+autocmd FileType python map <buffer> <c-]> :YcmCompleter GoToDefinition<CR>
+
+augroup python
+                au!
+                au BufRead,BufNewFile *.py,*.pyw set tabstop=4
+                au BufRead,BufNewFile *.py,*.pyw set shiftwidth=4
+                au BufRead,BufNewFile *.py,*.pyw set expandtab
+                au BufRead,BufNewFile *.py,*.pyw set softtabstop=4  "Insert 4 spaces when tab is pressed
+                au BufRead,BufNewFile *.py,*.pyw set smarttab       "Indent instead of tab at start of line
+                au BufRead,BufNewFile *.py,*.pyw set shiftround     "Round spaces to nearest shiftwidth multiple
+                au BufRead,BufNewFile *.py,*.pyw set colorcolumn=80 "Color last legal column
+
+augroup end
+
+" C/C++ settings
+augroup cpp
+                au!
+                au BufRead,BufNewFile *.c,*.cpp,*.h,*.hpp,*.cu set tabstop=2
+                au BufRead,BufNewFile *.c,*.cpp,*.h,*.hpp,*.cu set shiftwidth=2
+                au BufRead,BufNewFile *.c,*.cpp,*.h,*.hpp,*.cu set expandtab
+                au BufRead,BufNewFile *.c,*.cpp,*.h,*.hpp,*.cu set softtabstop=2  "Insert 4 spaces when tab is pressed
+                au BufRead,BufNewFile *.c,*.cpp,*.h,*.hpp,*.cu set smarttab       "Indent instead of tab at start of line
+                au BufRead,BufNewFile *.c,*.cpp,*.h,*.hpp,*.cu set shiftround     "Round spaces to nearest shiftwidth multiple
+                au BufRead,BufNewFile *.c,*.cpp,*.h,*.hpp,*.cu set colorcolumn=80 "Color last legal column
+augroup end
+
+" air-line
+let g:airline_powerline_fonts = 1
+let g:airline_theme='base16'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#ale#enabled = 1
+let g:ale_sign_error = "◉"
+let g:ale_sign_warning = "◉"
+highlight ALEErrorSign ctermfg=9 ctermbg=18 guifg=#C30500 guibg=#F5F5F5
+highlight ALEWarningSign ctermfg=11 ctermbg=18 guifg=#ED6237 guibg=#F5F5F5
+
+" tab switch
+nnoremap <Tab> <ESC>:tabn<CR>
+nnoremap <S-Tab> <ESC>:tabp<CR>
