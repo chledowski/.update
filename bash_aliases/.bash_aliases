@@ -17,7 +17,3 @@ alias wget='wget -c'
 alias cpProgress='rsync --progress -ravz'
 
 bu() { cp $@ $@.backup-'date +%y%m%d'; }
-
-# local aliases
-
-alias chl='cd /gpfs/data/geraslab/chledj01'
