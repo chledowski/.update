@@ -23,3 +23,5 @@ alias cpProgress='rsync --progress -ravz'
 
 alias exp='cd /data/shared/discovery/skynet/experiments/s2s'
 alias skynet='cd /data/jchledowski/skynet'
+
+export PS1="\[\033[36m\]\u\[\033[m\]@\[\033[32m\] \[\033[33;1m\]\w\[\033[m\] \[\033[01;32m\]($(git branch 2>/dev/null | grep '^*' | colrm 1 2))\[\033[00m\] \$ "
