@@ -23,3 +23,7 @@ alias cpProgress='rsync --progress -ravz'
 
 alias exp='cd /data/shared/discovery/skynet/experiments/s2s'
 alias data='cd /data/shared/discovery/skynet/experiments/s2s/common/skynet/skynet-fairseq-data'
+
+submit () {
+git add -u ; git commit -m "$1" ; git push
+}
