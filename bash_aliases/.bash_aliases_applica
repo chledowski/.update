@@ -22,4 +22,4 @@ alias wget='wget -c'
 alias cpProgress='rsync --progress -ravz'
 
 alias exp='cd /data/shared/discovery/skynet/experiments/s2s'
-alias skynet='cd /data/jchledowski/skynet'
+alias data='cd /data/shared/discovery/skynet/experiments/s2s/common/skynet/skynet-fairseq-data'
