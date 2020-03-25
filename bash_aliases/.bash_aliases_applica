@@ -27,3 +27,8 @@ alias data='cd /data/shared/discovery/skynet/experiments/s2s/common/skynet/skyne
 submit () {
 git add -u ; git commit -m "$1" ; git push
 }
+
+export NEXUS_USERNAME='deployment'
+export NEXUS_PASSWORD='applica_deploy_00'
+export PIP_EXTRA_INDEX_URL="https://pypi.python.org/simple"
+export NEXUS_PYPI_URL="nexus.applica.pl/repository/pypi-all/"
